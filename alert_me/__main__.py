@@ -4,6 +4,7 @@ import logging
 from alert_me._version import __version__
 from alert_me.config import get_config, get_plugin
 from alert_me.alert_me import AlertMe
+from alert_me.plugin import array_to_dict
 
 
 def parse_args():
@@ -84,16 +85,20 @@ def main():
     logging.debug(f"alert-me {__version__} run with arguments: {args}")
 
     alert_me = None
+    notify_params = args.args
 
-    if args.config:
-        alert_me = AlertMe(get_config(*args.config))
+    if "config" in args:
+        plugin = get_config(args.config[0])
+        alert_me = AlertMe([plugin])
     else:
         plugin = get_plugin(args.plugin)
         init_params = args.args[: len(plugin.required_init_params)]
-        args.args = args.args[len(plugin.required_init_params) :]
-        alert_me = AlertMe(plugin(*init_params))
+        notify_params = args.args[len(plugin.required_init_params) :]
+        alert_me = AlertMe(
+            [plugin(array_to_dict(init_params, plugin.required_init_params))]
+        )
 
-    alert_me.notify(*args.args)
+    alert_me.notify(array_to_dict(notify_params, plugin.required_notify_params))
 
 
 if __name__ == "__main__":

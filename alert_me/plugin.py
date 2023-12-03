@@ -9,29 +9,15 @@ class Plugin(ABC):
     required_init_params: dict["str", type] = {}
     required_notify_params: dict["str", type] = {}
 
-    @singledispatchmethod
-    def __init__(self, init_params):
-        raise ValueError(f"Invalid type for init_params: {type(init_params)}")
-
-    @__init__.register
-    def _from_dict(self, init_params: Dict[str, Any]):
+    def __init__(self, init_params: Dict[str, Any]):
         if self.name.strip() == "":
             raise Exception("Plugin name cannot be empty")
         self.init_params = init_params
         check_params(self.required_init_params, self.init_params)
 
-    @__init__.register
-    def _from_args(self, *args: List[Any]):
-        init_params = _args_to_dict(self.required_init_params, *args)
-        self.__init__(init_params)
-
     @abstractmethod
-    def notify(self, **notify_params: dict[str, Any]) -> None:
+    def notify(self, notify_params: dict[str, Any]) -> None:
         check_params(self.required_notify_params, notify_params)
-
-    def notify_args(self, *args: []) -> None:
-        notify_params = _args_to_dict(self.required_notify_params, *args)
-        self.notify(**notify_params)
 
 
 def check_params(required_params: dict[str, type], params: dict[str, Any]) -> None:
@@ -44,19 +30,19 @@ def check_params(required_params: dict[str, type], params: dict[str, Any]) -> No
             )
 
 
-def _args_to_dict(expected_dict: dict[str, Any], *args: []):
-    if len(args) < len(expected_dict):
+def array_to_dict(array: [], expected_dict: dict[str, Any]) -> dict[str, Any]:
+    if len(array) < len(expected_dict):
         logging.warning(
-            f"Insufficient arguments. Expected {len(expected_dict)}, got {len(args)}"
+            f"Insufficient arguments. Expected {len(expected_dict)}, got {len(array)}"
         )
-    if len(args) > len(expected_dict):
+    if len(array) > len(expected_dict):
         logging.warning(
-            f"Wrong number of arguments. Expected {len(expected_dict)}, got {len(args)}"
+            f"Wrong number of arguments. Expected {len(expected_dict)}, got {len(array)}"
         )
     res: dict[str, Any] = {}
     param_names = list(expected_dict.keys())
 
-    for i, arg in enumerate(args):
+    for i, arg in enumerate(array):
         if i >= len(param_names):
             break
 
@@ -66,3 +52,5 @@ def _args_to_dict(expected_dict: dict[str, Any], *args: []):
         res[param_name] = arg
 
     check_params(expected_dict, res)
+
+    return res

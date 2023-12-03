@@ -9,8 +9,4 @@ class AlertMe:
 
     def notify(self, notify_params: dict[str, any]) -> None:
         for plugin in self._plugins:
-            plugin.notify(**notify_params)
-
-    def notify(self, *args: list[str]) -> None:
-        for plugin in self._plugins:
-            plugin.notify_args(*args)
+            plugin.notify(notify_params)

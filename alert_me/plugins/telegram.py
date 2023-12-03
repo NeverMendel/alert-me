@@ -10,8 +10,8 @@ class TelegramPlugin(Plugin):
     required_init_params: dict["str", type] = {"token": str, "chat_id": str}
     required_notify_params: dict["str", type] = {"message": str}
 
-    def notify(self, **notify_params: dict[str, any]):
-        super().notify(**notify_params)
+    def notify(self, notify_params: dict[str, any]):
+        super().notify(notify_params)
         requests.post(
             f"https://api.telegram.org/bot{self.init_params['token']}/sendMessage",
             data={
