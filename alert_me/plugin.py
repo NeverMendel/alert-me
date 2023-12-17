@@ -10,6 +10,12 @@ class Plugin(ABC):
     required_notify_params: dict["str", type] = {}
 
     def __init__(self, init_params: Dict[str, Any]):
+        """
+        Initialize the plugin
+
+        Args:
+            init_params (dict[str, any]): The parameters to initialize the plugin with
+        """
         if self.name.strip() == "":
             raise Exception("Plugin name cannot be empty")
         self.init_params = init_params
@@ -21,6 +27,13 @@ class Plugin(ABC):
 
 
 def check_params(required_params: dict[str, type], params: dict[str, Any]) -> None:
+    """
+    Check that the required parameters are present and of the correct type
+
+    Args:
+        required_params (dict[str, type]): The required parameters
+        params (dict[str, Any]): The parameters to check
+    """
     for param_name, param_type in required_params.items():
         if param_name not in params:
             raise Exception(f"Missing required parameter {param_name}")
@@ -31,6 +44,16 @@ def check_params(required_params: dict[str, type], params: dict[str, Any]) -> No
 
 
 def array_to_dict(array: [], expected_dict: dict[str, Any]) -> dict[str, Any]:
+    """
+    Convert an array to a dict
+
+    Args:
+        array (list): The array to convert
+        expected_dict (dict[str, Any]): The expected dict
+
+    Returns:
+        dict[str, Any]: The converted dict
+    """
     if len(array) < len(expected_dict):
         logging.warning(
             f"Insufficient arguments. Expected {len(expected_dict)}, got {len(array)}"

@@ -9,21 +9,20 @@ from alert_me.plugin import array_to_dict
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Command line tool to convert HEIF images",
+        description="Multi-Platform Python tool to send notifications to your devices",
         formatter_class=lambda prog: argparse.RawTextHelpFormatter(
-            "heif-convert", width=80
+            "alert-me", width=80
         ),
     )
-    plugin_group = parser.add_mutually_exclusive_group()
+    plugin_group = parser.add_mutually_exclusive_group(required=True)
 
     plugin_group.add_argument(
         "-c",
         "--config",
-        dest="config_unprocessed",
         type=str,
         help="Configuration name \n"
-        "syntax: --config=[config_name1],[config_name2],...\n"
-        "example: --config=telegram,email",
+        "syntax: --config=[config_name]\n"
+        "example: --config=telegram",
     )
     plugin_group.add_argument(
         "-p", "--plugin", dest="plugin", type=str, help="Plugin name"
@@ -53,12 +52,7 @@ def parse_args():
         version="%(prog)s {version}".format(version=__version__),
     )
 
-    args = parser.parse_args()
-
-    if args.config_unprocessed:
-        args.config = args.config_unprocessed.split(",")
-
-    return args
+    return parser.parse_args()
 
 
 def configure_logging(args):
@@ -88,9 +82,11 @@ def main():
     notify_params = args.args
 
     if "config" in args:
-        plugin = get_config(args.config[0])
+        # Load plugin from config file
+        plugin = get_config(args.config)
         alert_me = AlertMe([plugin])
     else:
+        # Initalize plugin with arguments
         plugin = get_plugin(args.plugin)
         init_params = args.args[: len(plugin.required_init_params)]
         notify_params = args.args[len(plugin.required_init_params) :]

@@ -16,14 +16,14 @@ setup(
     description="Multi-Platform Python tool to send notifications to your devices",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    keywords=["alert-me", "notify-me"],
+    keywords=["alert-me", "notify-me", "email", "notification"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=find_packages(),
+    packages=["alert_me", "alert_me.plugins"],
     install_requires=["configparser", "requests"],
     python_requires=">=3.8",
     entry_points={
