@@ -8,7 +8,7 @@ Multi-Platform Python tool to send notifications to your devices. alert-me allow
 - [Installation](#installation)
 - [Usage](#usage)
 - [Config](#config)
-- [Arguments](#command-line-arguments)
+- [Command line arguments](#command-line-arguments)
 - [License](#license)
 
 ## 📕 About <a name="about"></a>
