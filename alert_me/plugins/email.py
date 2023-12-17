@@ -1,7 +1,8 @@
-import requests
 import smtplib, ssl
 
 from alert_me.plugin import Plugin
+
+import requests
 
 
 class EmailPlugin(Plugin):

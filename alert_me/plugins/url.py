@@ -1,4 +1,5 @@
 from alert_me.plugin import Plugin
+
 import requests
 
 
