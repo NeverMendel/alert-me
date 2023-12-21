@@ -17,6 +17,7 @@ class TelegramPlugin(Plugin):
             data={
                 "chat_id": self.init_params["chat_id"],
                 "text": notify_params["message"],
+                "disable_web_page_preview": "True",
                 "parse_mode": "MarkDown",
             },
         )
