@@ -9,8 +9,13 @@ from alert_me.plugins.email import EmailPlugin
 from configparser import ConfigParser
 
 # Config file paths
-# The first file found will be used
-CONFIG_FILE = ["~/.alert-me.ini", "~/.alert-me.conf", "/etc/alert-me/alert-me.conf", "/etc/alert-me/alert-me.ini"]
+# The first config file found will be used
+CONFIG_FILE = [
+    "~/.alert-me.conf",
+    "~/.alert-me.ini",
+    "/etc/alert-me/alert-me.conf",
+    "/etc/alert-me/alert-me.ini",
+]
 
 # Installed plugins
 _plugins: dict[str, Plugin] = {
@@ -48,7 +53,9 @@ def get_config(config_name: str) -> Plugin:
             config_path = os.path.expanduser(path)
             break
     if config_path is None:
-        raise Exception(f"alert-me config file not found in any of these locations: {CONFIG_FILE}")
+        raise Exception(
+            f"alert-me config file not found in any of these locations: {CONFIG_FILE}"
+        )
 
     logging.debug(f"Reading config from '{config_path}'. Installed plugins: {_plugins}")
 

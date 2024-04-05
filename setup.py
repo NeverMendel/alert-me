@@ -23,7 +23,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=["alert_me", "alert_me.plugins"],
+    packages=find_packages(),
     install_requires=["configparser", "requests"],
     python_requires=">=3.8",
     entry_points={
