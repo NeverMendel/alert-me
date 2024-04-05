@@ -20,16 +20,16 @@ def parse_args():
         "-c",
         "--config",
         type=str,
-        help="Configuration name \n"
+        help="configuration name\n"
         "syntax: --config=[config_name]\n"
         "example: --config=telegram",
     )
     plugin_group.add_argument(
-        "-p", "--plugin", dest="plugin", type=str, help="Plugin name"
+        "-p", "--plugin", dest="plugin", type=str, help="plugin name"
     )
 
     parser.add_argument(
-        "args", nargs=argparse.REMAINDER, help="Plugin and/or notify arguments"
+        "args", nargs=argparse.REMAINDER, help="plugin and/or notify arguments"
     )
     parser.add_argument(
         "-v",

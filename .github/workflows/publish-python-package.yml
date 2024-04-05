@@ -1,0 +1,46 @@
+name: Publish Python Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish-package:
+    name: Publish Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set tag version
+        id: tag_version
+        run: |
+          tag=$(echo $GITHUB_REF | cut -d / -f 3)
+          echo ::set-output name=version::${tag:1}
+
+      - name: Install dependencies
+        run: python3 -m pip install --upgrade build twine
+
+      - name: Build project
+        run: python3 -m build
+
+      - name: Check build
+        run: python3 -m twine check dist/*
+
+      - name: Install alert-me
+        run: sudo python3 setup.py install
+
+      - name: Assert tag version match Python package version
+        run: |
+          expected="alert-me ${{ steps.tag_version.outputs.version }}"
+          actual=$(alert-me --version)
+          echo expected=\"$expected\"
+          echo actual=\"$actual\"
+          [[ $expected == $actual ]]
+
+      - name: Remove deprecated egg file
+        run: rm -f dist/*.egg
+
+      - name: Publish project
+        run: python3 -m twine upload dist/* -u ${{ secrets.PYPY_USERNAME }} -p ${{ secrets.PYPY_PASSWORD }} --non-interactive
