@@ -30,7 +30,7 @@ Creating additional plugins is easy. Just create a new class that inherits from 
 The easiest way to get alert-me is through the pypi.org repository. Install it by running the following command:
 
 ```bash
-pip install alert-me
+pip install python-alert
 ```
 
 ## Building from source

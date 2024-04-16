@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="UTF-8") as f:
     long_description = f.read()
 
 setup(
-    name="alert-me",
+    name="python-alert",
     version=__version__,
     url="https://github.com/NeverMendel/alert-me",
     license="MIT",
@@ -16,7 +16,7 @@ setup(
     description="Multi-Platform Python tool to send notifications to your devices",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    keywords=["alert-me", "notify-me", "email", "notification"],
+    keywords=["python-alert", "alert-me", "notify-me", "email", "notification"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
